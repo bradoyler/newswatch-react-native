@@ -1,6 +1,6 @@
 # NewsWatch-React-Native
 
-[NewsBlock Video](http://getnewsblock.com/) viewer for iOS, made with [React-Native](https://github.com/facebook/react-native).
+A [YouTube News](https://www.youtube.com/channel/UCYfdidRxbB8Qhf0Nx7ioOYw) app for iOS, made with [React-Native](https://github.com/facebook/react-native).
 
 Enjoy watching your daily news.
 
