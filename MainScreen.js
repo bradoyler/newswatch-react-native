@@ -24,7 +24,7 @@ var resultsCache = {
     timeForQuery:{}
 };
 
-var SearchScreen = React.createClass({
+var MainScreen = React.createClass({
     mixins: [TimerMixin],
     timeoutID: (null: any),
 
@@ -216,4 +216,4 @@ var styles = StyleSheet.create({
     },
 });
 
-module.exports = SearchScreen;
+module.exports = MainScreen;
