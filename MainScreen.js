@@ -69,13 +69,10 @@ fetchVideos: function(query: string) {
         })
         .then((responseData) => {
 
-            console.log('## fetched', BASE_URL+query);
-
             if(!responseData || !responseData.videos){ // abort when no videos
               //  this.setState({isLoading: false});
                 return;
             }
-            //console.log('#### results1',this.state.filter, query, resultsCache.timeForQuery[query]);
 
             resultsCache.totalForQuery[query] = responseData.videos.length;
             resultsCache.dataForQuery[query] = responseData.videos;

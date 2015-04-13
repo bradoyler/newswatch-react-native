@@ -44,7 +44,6 @@ var TopicsListView = React.createClass({
     },
 
     selectTopic: function(topic: Object) {
-        console.log('### selectTopic1', topic);
         this.setState({filter:topic.name});
 
         this.props.navigator.push({
