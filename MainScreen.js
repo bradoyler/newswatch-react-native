@@ -32,7 +32,7 @@ getInitialState: function() {
     return {
         isLoading: true,
         dataSource: new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2,
+            rowHasChanged:() => true, //(row1, row2) => row1 !== row2, //was causing issue with images
         }),
         filter: 'nation',
     };
@@ -122,8 +122,6 @@ handleScroll: function(event: Object) {
 },
 
 render: function() {
-
-    //console.log('### RENDER', this.props.filter, this.state.filter);
 
     var results = this.state.dataSource.getRowCount() === 0 ?
         <NoVideos
