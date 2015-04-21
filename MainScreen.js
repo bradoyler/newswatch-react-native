@@ -32,7 +32,7 @@ getInitialState: function() {
     return {
         isLoading: true,
         dataSource: new ListView.DataSource({
-            rowHasChanged:() => true, //(row1, row2) => row1 !== row2, //was causing issue with images
+            rowHasChanged:() => (row1, row2) => row1 !== row2,
         }),
         filter: 'nation',
     };
@@ -46,12 +46,15 @@ componentDidMount: function() {
 fetchVideos: function(query: string) {
     
     this.timeoutID = null;
-    var expiry = 4 * 60 * 1000; // cache expiration
+    this.setState({
+                isLoading: true,
+                filter:query
+            });
+
+    var expiry = 1 * 60 * 1000; // cache expiration
     if(resultsCache.timeForQuery[query] + expiry > new Date().getTime()) {
-        console.log('## cache HIT');
         this.setState({
             isLoading: false,
-            filter:query,
             dataSource: this.getDataSource(resultsCache.dataForQuery[query])
         });
         return;
@@ -60,10 +63,11 @@ fetchVideos: function(query: string) {
     fetch(BASE_URL+query)
         .then((response) => response.json())
         .catch((error) => {
-            resultsCache.dataForQuery[query] = undefined;
+            console.log('## error');
+            var availableData =  resultsCache.dataForQuery[query] || [];
 
             this.setState({
-                dataSource: this.getDataSource([]),
+                dataSource: this.getDataSource(availableData),
                 isLoading: false,
             });
         })
@@ -73,6 +77,7 @@ fetchVideos: function(query: string) {
               //  this.setState({isLoading: false});
                 return;
             }
+            console.log('## fetched', responseData.videos.length, query);
 
             resultsCache.totalForQuery[query] = responseData.videos.length;
             resultsCache.dataForQuery[query] = responseData.videos;
@@ -165,11 +170,14 @@ render: function() {
 
 var NoVideos = React.createClass({
     render: function() {
-        var text = '';
+        var text = 'no results found';
         if (this.props.filter) {
-            text = `No results for “${this.props.filter}”`;
-        } else if (!this.props.isLoading) {
-            text = 'No videos found';
+            if(this.props.isLoading){
+                text = `Loading results for “${this.props.filter}”`;
+            }
+            else {
+                text = `No results for “${this.props.filter}”`;
+            }
         }
 
         return (

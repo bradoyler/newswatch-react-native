@@ -44,7 +44,7 @@ var TopicsListView = React.createClass({
     },
 
     selectTopic: function(topic: Object) {
-        this.setState({filter:topic.name});
+        this.setState({filter:topic.name.toLowerCase()});
 
         this.props.navigator.push({
             title: topic.name,
