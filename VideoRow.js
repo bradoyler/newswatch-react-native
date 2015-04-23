@@ -1,5 +1,7 @@
 'use strict';
 
+var moment = require('moment');
+
 var React = require('react-native');
 var {
     Image,
@@ -15,20 +17,24 @@ var getImageSource = require('./getImageSource');
 var VideoRow = React.createClass({
     render: function() {
         var viewCount = this.props.video.stats.viewCount;
+        var pubDate = moment(this.props.video.publishedAt).fromNow(true);
         var channelTitle = this.props.video.channelTitle;
         var title = this.props.video.title;
+        var thumbnail = {uri:this.props.video.thumbnails.default.url};
+        var defaultImg = require('image!story-background');
         return (
             <View>
                 <TouchableHighlight onPress={this.props.onSelect}>
                     <View style={styles.row}>
                         <Image
-                            source={getImageSource(this.props.video, 'default')}
+                            defaultSource={defaultImg}
+                            source={thumbnail}
                             style={styles.cellImage}
                         />
                         <View style={styles.textContainer}>
                             <Text style={styles.title} numberOfLines={2}>{title}</Text>
                             <Text style={styles.channel} numberOfLines={1}>
-                                {channelTitle} {' '}&bull;{' '} {viewCount} views
+                                {channelTitle} {' '} &bull;{' '} {pubDate} &bull;{' '} {viewCount} views
                             </Text>
                         </View>
                     </View>
