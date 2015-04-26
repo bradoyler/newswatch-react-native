@@ -73,8 +73,7 @@ var styles = StyleSheet.create({
     },
     cellBorder: {
         backgroundColor: 'rgba(0, 0, 0, 0.1)',
-        // Trick to get the thinest line the device can display
-        height: 1 / PixelRatio.get(),
+        height: 1,
         marginLeft: 4,
     },
 });

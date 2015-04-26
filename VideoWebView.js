@@ -1,5 +1,7 @@
 'use strict';
 
+var moment = require('moment');
+
 var React = require('react-native');
 
 var {
@@ -10,29 +12,68 @@ var {
     } = React;
 
 var ViewVideo = React.createClass({
+
+    getInitialState: function() {
+        return {
+            status: 'No Page Loaded',
+            backButtonEnabled: false,
+            forwardButtonEnabled: false,
+            loading: true,
+        };
+    },
+
     render: function() {
-        //console.log('### VIDEOS::', React.VIDEOS);
+        var pubDate = moment(this.props.video.publishedAt).fromNow(false);
+
         return (
             <View style={styles.container}>
-                <WebView url={this.props.url}
+                <Text style={[styles.noResultsText, styles.centerText]}>
+                {pubDate} via {this.props.video.channelTitle} | {this.props.video.stats.viewCount} views
+                </Text>
+                <WebView
+                    style={styles.frame}
+                    url={this.props.url}
                     renderLoading={this.renderLoading}
-                    renderError={this.renderError} />
+                    renderError={this.renderError}
+                    automaticallyAdjustContentInsets={false}
+                />
             </View>
         );
     },
     renderLoading: function () {
-        console.log('## webvew: renderloading()');
+        console.log('## webView: loading()');
+        return (
+            <View style={[styles.container, styles.centerText]}>
+                <Text style={styles.noResultsText}>Loading video...</Text>
+            </View>
+        );
     },
     renderError: function () {
-        console.log('## webvew: rendererror()');
+        return (
+            <View style={[styles.container, styles.centerText]}>
+                <Text style={styles.noResultsText}>Video not found - 404, {this.props.url}</Text>
+            </View>
+        );
     }
 });
 
 var styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F6F6EF',
+        backgroundColor: '#cccccc',
         flexDirection: 'column'
+    },
+    centerText: {
+        marginBottom:5,
+        textAlign: 'center',
+    },
+    noResultsText: {
+        marginTop: 70,
+        marginBottom:0,
+        color: '#000000',
+    },
+    frame: {
+        marginTop:0
     }
 });
 

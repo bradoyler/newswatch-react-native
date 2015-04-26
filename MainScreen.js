@@ -24,6 +24,8 @@ var resultsCache = {
     timeForQuery:{}
 };
 
+var baseDataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
 var MainScreen = React.createClass({
     mixins: [TimerMixin],
     timeoutID: (null: any),
@@ -31,9 +33,7 @@ var MainScreen = React.createClass({
 getInitialState: function() {
     return {
         isLoading: true,
-        dataSource: new ListView.DataSource({
-            rowHasChanged:() => (row1, row2) => row1 !== row2,
-        }),
+        dataSource: baseDataSource,
         filter: 'nation',
     };
 },
@@ -55,7 +55,7 @@ fetchVideos: function(query: string) {
     if(resultsCache.timeForQuery[query] + expiry > new Date().getTime()) {
         this.setState({
             isLoading: false,
-            dataSource: this.getDataSource(resultsCache.dataForQuery[query])
+            dataSource: baseDataSource.cloneWithRows(resultsCache.dataForQuery[query])
         });
         return;
     }
@@ -63,18 +63,18 @@ fetchVideos: function(query: string) {
     fetch(BASE_URL+query)
         .then((response) => response.json())
         .catch((error) => {
-            console.log('## error');
+            console.log('## error for: '+ query);
             var availableData =  resultsCache.dataForQuery[query] || [];
 
             this.setState({
-                dataSource: this.getDataSource(availableData),
+                dataSource: baseDataSource.cloneWithRows(availableData),
                 isLoading: false,
             });
         })
         .then((responseData) => {
 
             if(!responseData || !responseData.videos){ // abort when no videos
-              //  this.setState({isLoading: false});
+                console.log('### no responseData');
                 return;
             }
             console.log('## fetched', responseData.videos.length, query);
@@ -85,23 +85,21 @@ fetchVideos: function(query: string) {
 
             this.setState({
                 isLoading: false,
-                dataSource: this.getDataSource(resultsCache.dataForQuery[query]),
+                dataSource: baseDataSource.cloneWithRows(resultsCache.dataForQuery[query]),
             });
         })
         .done();
 },
 
-getDataSource: function(videos: Array<any>): ListView.DataSource {
-    return this.state.dataSource.cloneWithRows(videos);
-},
-
 selectVideo: function(video: Object) {
+
+    var domain = 'https://www.youtube.com';
     this.props.navigator.push({
         title: video.title,
         component: VideoWebView,
         passProps: {
             video: video,
-            url:'https://www.youtube.com/embed/'+ video.videoId +"?autoplay=1" //'http://www.w3portals.com/videotest.html'//
+            url: domain +'/embed/'+ video.videoId +'?autoplay=1' // domain+'/watch?v='+video.videoId
         }
     });
 },
