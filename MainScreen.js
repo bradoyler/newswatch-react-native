@@ -120,7 +120,7 @@ handleScroll: function(event: Object) {
         var filter = this.props.filter || this.state.filter;
         // reduce dup fetches
         this.clearTimeout(this.timeoutID);
-        this.timeoutID = this.setTimeout(() => this.fetchVideos(filter), 50);
+        this.timeoutID = this.setTimeout(() => this.fetchVideos(filter), 250);
     }
 },
 
@@ -143,22 +143,22 @@ render: function() {
             onScroll={this.handleScroll}
         />;
 
+        return (
+            <View style={styles.container}>
+                <View style={[styles.separator, {marginTop: 64}]} />
+                {results}
+            </View>
+        );
+},
+
+renderHeader: function () {
     if (this.state.isLoading) {
         return (
             <View style={styles.container}>
                 <ActivityIndicatorIOS
                     animating={this.state.isLoading}
-                    style={[{marginTop: 75}]}
+                    style={[{marginTop: 10}]}
                 />
-               {results}
-            </View>
-        );
-    }
-    else {
-        return (
-            <View style={styles.container}>
-                <View style={[styles.separator, {marginTop: 64}]} />
-                {results}
             </View>
         );
     }
