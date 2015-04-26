@@ -104,15 +104,6 @@ selectVideo: function(video: Object) {
     });
 },
 
-renderRow: function(video: Object)  {
-    return (
-        <VideoRow
-            onSelect={() => this.selectVideo(video)}
-            video={video}
-        />
-    );
-},
-
 handleScroll: function(event: Object) {
 
     if (event.nativeEvent.contentOffset.y < -110) { // pull-down
@@ -136,6 +127,8 @@ render: function() {
             dataSource={this.state.dataSource}
             renderHeader={this.renderHeader}
             renderRow={this.renderRow}
+            initialListSize={8}
+            pageSize={8}
             automaticallyAdjustContentInsets={false}
             keyboardDismissMode="onDrag"
             keyboardShouldPersistTaps={true}
@@ -149,6 +142,15 @@ render: function() {
                 {results}
             </View>
         );
+},
+
+renderRow: function(video: Object)  {
+    return (
+        <VideoRow
+            onSelect={() => this.selectVideo(video)}
+            video={video}
+        />
+    );
 },
 
 renderHeader: function () {
