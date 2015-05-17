@@ -14,8 +14,6 @@ var TimerMixin = require('react-timer-mixin');
 var VideoRow = require('./VideoRow');
 var VideoWebView = require('./VideoWebView');
 
-var fetch = require('fetch');
-
 var BASE_URL = 'http://getnewsblock.com/api/';
 
 var resultsCache = {
