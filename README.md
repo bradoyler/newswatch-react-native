@@ -14,19 +14,19 @@ Enjoy watching your daily news.
 $ npm i -g react-native-cli
 ```
 
-##### watchman:#####
-```
-$ brew install watchman
-```
-
 ##### clone & install this repo: #####
 
 ```
 $ git clone https://github.com/bradoyler/newswatch-react-native.git
 $ cd newswatch-react-native
-$ npm install
+$ sudo npm install
 ```
 
 - Launch Xcode, open newswatch.xcodeproj
 - Click on the play/run button (cmd + R).
 - Open the directory in the text editor of your choice.
+
+#### optional step for easier development:
+```
+$ brew install watchman
+```
