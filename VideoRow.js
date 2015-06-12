@@ -26,7 +26,7 @@ var VideoRow = React.createClass({
             <View>
                 <TouchableHighlight onPress={this.props.onSelect}>
                     <View style={styles.row}>
-                        <Image
+                        <DelayedImage
                             defaultSource={defaultImg}
                             source={thumbnail}
                             style={styles.cellImage}
@@ -43,6 +43,22 @@ var VideoRow = React.createClass({
             </View>
         );
     }
+});
+
+var DelayedImage = React.createClass({
+    propTypes: Image.propTypes,
+    getInitialState(): { showImage: boolean } {
+    return { showImage: true };
+},
+componentWillReceiveProps: function(nextProps: any) {
+    if(this.props.source.uri != nextProps.source.uri) {
+        this.setState({ showImage: false });
+        setTimeout(() => this.setState({ showImage: true }), 0);
+    }
+},
+render: function(): React.Component {
+    return <Image {...this.props} source={{uri: this.state.showImage ? this.props.source.uri : null}} />
+},
 });
 
 var styles = StyleSheet.create({
