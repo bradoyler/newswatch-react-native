@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "moment": "^2.10.2",
-    "react-native": "0.5.x"
+    "react-native": "0.8.x",
+    "react-timer-mixin": "^0.13.2"
   }
 }
