@@ -16,9 +16,7 @@ var getImageSource = require('./getImageSource');
 
 var VideoRow = React.createClass({
     render: function() {
-        var viewCount = this.props.video.stats.viewCount;
         var pubDate = moment(this.props.video.publishedAt).fromNow(true);
-        var channelTitle = this.props.video.channelTitle;
         var title = this.props.video.title;
         var thumbnail = {uri:this.props.video.thumbnails.default.url};
         var defaultImg = require('image!story-background');
@@ -34,7 +32,7 @@ var VideoRow = React.createClass({
                         <View style={styles.textContainer}>
                             <Text style={styles.title} numberOfLines={2}>{title}</Text>
                             <Text style={styles.channel} numberOfLines={1}>
-                                {channelTitle} {' '} &bull;{' '} {pubDate} &bull;{' '} {viewCount} views
+                                {pubDate} ago
                             </Text>
                         </View>
                     </View>

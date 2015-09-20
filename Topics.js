@@ -13,7 +13,7 @@ var {
 var MainScreen = require('./MainScreen');
 
 var TOPICS = [
-    {name:'Sports'},{name:'Entertainment'}, {name:'Music'},{name:'Science'},
+    {name:'Entertainment'}, {name:'Science'},
     {name:'Technology'}, {name:'Business'},{name:'World'},{name:'Politics'}];
 
 var TopicsListView = React.createClass({

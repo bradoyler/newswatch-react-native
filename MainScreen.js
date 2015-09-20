@@ -14,7 +14,21 @@ var TimerMixin = require('react-timer-mixin');
 var VideoRow = require('./VideoRow');
 var VideoWebView = require('./VideoWebView');
 
-var BASE_URL = 'http://newsblock.io/api/';
+var youtubeChannel = {
+    devKey: "AIzaSyBIv0VR7jqqTSWtVUKRWdnGVLClMaP2OsY",
+    playlists: [
+        {id: "PLUG0dgd8xRox0HUkTkB1GRuUQ8UF4bKw9", slug: "nation"},
+        {id: "PLUG0dgd8xRowNDiWD8Gm2DbSSLYRU2GU1", slug: "business"},
+        {id: "PLUG0dgd8xRowfHi0tmex0wNphaZWxXbeb", slug: "technology"},
+        {id: "PLUG0dgd8xRowfHi0tmex0wNphaZWxXbeb", slug: "science"},
+        {id: "PLUG0dgd8xRowrmQgoUg5vqe6Nx6uqZG0X", slug: "entertainment"},
+        {id: "PLUG0dgd8xRownUauz1bPmWm-_0AWZZt7C", slug: "politics"},
+        {id: "PLUG0dgd8xRoySqb3vR1Hp5ZPSfSec_VjY", slug: "world"}
+    ]
+};
+
+var BASE_URL = 'https://www.googleapis.com/youtube/v3/playlistItems?key='+
+    youtubeChannel.devKey+'&part=snippet&maxResults=18&playlistId=';
 
 var resultsCache = {
     dataForQuery: {},
@@ -42,12 +56,9 @@ componentDidMount: function() {
 },
 
 fetchVideos: function(query: string) {
-    
+
     this.timeoutID = null;
-    this.setState({
-                isLoading: true,
-                filter:query
-            });
+    this.setState({isLoading: true, filter:query});
 
     var expiry = 1 * 60 * 1000; // cache expiration
     if(resultsCache.timeForQuery[query] + expiry > new Date().getTime()) {
@@ -58,7 +69,12 @@ fetchVideos: function(query: string) {
         return;
     }
 
-    fetch(BASE_URL+query)
+    var playlist = youtubeChannel.playlists.filter(function (item) {
+            return (item.slug === query);
+        })[0] || youtubeChannel.playlists[0];
+
+    var ytPlaylistItemUrl = BASE_URL + playlist.id;
+    fetch(ytPlaylistItemUrl)
         .then((response) => response.json())
         .catch((error) => {
             console.log('## error for: '+ query);
@@ -71,10 +87,20 @@ fetchVideos: function(query: string) {
         })
         .then((responseData) => {
 
-            if(!responseData || !responseData.videos){ // abort when no videos
-                console.log('### no responseData');
-                return;
+            if(!responseData || !responseData.items){ // abort when no videos
+                return console.log('### no responseData');
             }
+
+            responseData.videos = responseData.items.map(function (item) {
+                return {
+                    videoId: item.snippet.resourceId.videoId,
+                    title: item.snippet.title,
+                    description: item.snippet.description,
+                    thumbnails: item.snippet.thumbnails,
+                    publishedAt: item.snippet.publishedAt
+                }
+            });
+
             console.log('## fetched', responseData.videos.length, query);
 
             resultsCache.totalForQuery[query] = responseData.videos.length;

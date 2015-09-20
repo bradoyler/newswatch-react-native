@@ -28,7 +28,7 @@ var ViewVideo = React.createClass({
         return (
             <View style={styles.container}>
                 <Text style={[styles.noResultsText, styles.centerText]}>
-                {pubDate} via {this.props.video.channelTitle} | {this.props.video.stats.viewCount} views
+                {pubDate}
                 </Text>
                 <WebView
                     style={styles.frame}
