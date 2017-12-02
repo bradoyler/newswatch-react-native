@@ -1,5 +1,7 @@
 {
   "expo": {
+    "name": "newswatch",
+    "slug": "newswatch",
     "sdkVersion": "22.0.0"
   }
 }

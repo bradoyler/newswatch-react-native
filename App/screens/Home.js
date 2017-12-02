@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { FlatList, View, ActivityIndicatorIOS } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+// import { StackNavigator } from 'react-navigation';
 // import TimerMixin from 'react-timer-mixin'
 
-import log from './lib/logger'
-import styles from './components/styles'
-import VideoRow from './components/VideoRow';
-import VideoWebView from './components/VideoWebView';
+import log from '../lib/logger'
+import styles from '../components/styles'
+import VideoRow from '../components/VideoRow';
+// import VideoWebView from '../components/VideoWebView';
 // import NoVideo from './components/NoVideo';
 
 const BASE_URL = 'http://api.newsblock.io/api/';
@@ -103,9 +103,13 @@ renderItem(video: Object) {
   return (<VideoRow video={video} navigation={this.props.navigation} />)
 }
 
+onRenderItem (video: Object) {
+  this.renderItem(video: Object);
+}
+
 render() {
   const keyExtractor = (item) => item._id;
-  
+
   return (
     <FlatList
       data={this.state.data}
@@ -136,18 +140,8 @@ HomeScreen.defaultProps = {
 
 HomeScreen.propTypes = {
   filter: PropTypes.string,
+  navigation: PropTypes.object,
 //   isLoading: PropTypes.boolean
 };
 
-const App =  StackNavigator({
-  Home: {
-    path: '/',
-    screen: HomeScreen,
-  },
-  Video: {
-    path: 'video/:id',
-    screen: VideoWebView,
-  }
-});
-
-export default App
+export default HomeScreen
